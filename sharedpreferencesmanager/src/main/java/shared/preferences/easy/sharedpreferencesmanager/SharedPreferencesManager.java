@@ -31,10 +31,10 @@ import static shared.preferences.easy.sharedpreferencesmanager.Constant.SHARED_P
  * TODO CLASS FOR SHAREDPREFERENCES MANAGEMENT
  *
  * @author lucaslima
- * @version 1.3.3
+ * @version 1.3.4
  * @since 21 Fev 2019
  */
-class SharedPreferencesManager {
+public class SharedPreferencesManager {
 
     private Context context;
     private boolean resultBoolean = true;
