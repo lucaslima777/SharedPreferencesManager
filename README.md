@@ -42,22 +42,22 @@ preferencesBoolean.save();
 
 ```java
 SharedPreferencesManager.Int preferencesInt = new SharedPreferencesManager(
-                            this, //Context
-                            et_int.getText().toString(), //Value
-                            ElementType.INT, //Type
-                            new OnSavePreferences() { //Callback
+                            context, 							//Context
+                            100, 							//Value
+                            ElementType.INT, 						//Type
+                            new OnSavePreferences() { 					//Callback
 
                                 @Override
-                                public void onComplete(String msg) {
+                                public void onComplete(String msg) {			//Success
                                     Log.i(TAG, msg);
                                 }
 
                                 @Override
-                                public void onError(Exception error) {
+                                public void onError(Exception error) {			//Error
                                     Log.e(TAG, "onError: " + error.getMessage());
                                 }
                             }).new Int();
-                    preferencesInt.save();
+                    preferencesInt.save();						//Save
 
 ```
 
