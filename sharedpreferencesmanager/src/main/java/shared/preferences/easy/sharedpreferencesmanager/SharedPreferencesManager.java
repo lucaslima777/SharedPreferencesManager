@@ -31,7 +31,7 @@ import static shared.preferences.easy.sharedpreferencesmanager.Constant.SHARED_P
  * TODO CLASS FOR SHAREDPREFERENCES MANAGEMENT
  *
  * @author lucaslima
- * @version 1.3.5
+ * @version 1.3.6
  * @since 21 Fev 2019
  */
 public class SharedPreferencesManager {
