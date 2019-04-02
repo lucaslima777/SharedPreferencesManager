@@ -56,6 +56,7 @@ SharedPreferencesManager.Int preferencesInt = new SharedPreferencesManager(
                                 public void onError(Exception error) {			//Error
                                     Log.e(TAG, "onError: " + error.getMessage());
                                 }
+				
                             }).new Int();
                     preferencesInt.save();						//Save
 
