@@ -33,7 +33,7 @@ dependencies {
 * Boolean:
 
 ```java
-SharedPreferencesManager.Boolean preferencesBoolean = new SharedPreferencesManager(this, Boolean).new Boolean();
+SharedPreferencesManager.Boolean preferencesBoolean = new SharedPreferencesManager(this, true).new Boolean();
 preferencesBoolean.save();
 
 ```
@@ -58,6 +58,7 @@ SharedPreferencesManager.Int preferencesInt = new SharedPreferencesManager(
                                 }
 				
                             }).new Int();
+			    
                     preferencesInt.save();						//Save
 
 ```
