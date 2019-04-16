@@ -50,7 +50,7 @@ public class SharedPreferencesManager {
      *
      * @param context
      */
-    SharedPreferencesManager(@NonNull Context context) {
+    public SharedPreferencesManager(@NonNull Context context) {
         this.context = context;
     }
 
@@ -60,7 +60,7 @@ public class SharedPreferencesManager {
      * @param context
      * @param Boolean
      */
-    SharedPreferencesManager(@NonNull Context context, boolean Boolean) {
+    public SharedPreferencesManager(@NonNull Context context, boolean Boolean) {
         this.context = context;
         this.resultBoolean = Boolean;
     }
@@ -73,7 +73,7 @@ public class SharedPreferencesManager {
      * @param type
      * @param callback
      */
-    SharedPreferencesManager(@NonNull Context context, java.lang.String result, Type type, Callback callback) {
+    public SharedPreferencesManager(@NonNull Context context, java.lang.String result, Type type, Callback callback) {
         this.context = context;
         switch (type) {
             case INT:
