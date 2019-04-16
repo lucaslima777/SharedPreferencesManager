@@ -17,6 +17,7 @@ package shared.preferences.easy.sharedpreferencesmanager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import shared.preferences.easy.sharedpreferencesmanager.Callback.Callback;
 import shared.preferences.easy.sharedpreferencesmanager.Callback.OnSavePreferences;
@@ -31,7 +32,7 @@ import static shared.preferences.easy.sharedpreferencesmanager.Constant.SHARED_P
  * TODO CLASS FOR SHAREDPREFERENCES MANAGEMENT
  *
  * @author lucaslima
- * @version 1.3.4
+ * @version 1.3.6
  * @since 21 Fev 2019
  */
 public class SharedPreferencesManager {
@@ -49,7 +50,7 @@ public class SharedPreferencesManager {
      *
      * @param context
      */
-    SharedPreferencesManager(Context context) {
+    SharedPreferencesManager(@NonNull Context context) {
         this.context = context;
     }
 
@@ -59,7 +60,7 @@ public class SharedPreferencesManager {
      * @param context
      * @param Boolean
      */
-    SharedPreferencesManager(Context context, boolean Boolean) {
+    SharedPreferencesManager(@NonNull Context context, boolean Boolean) {
         this.context = context;
         this.resultBoolean = Boolean;
     }
@@ -72,13 +73,13 @@ public class SharedPreferencesManager {
      * @param type
      * @param callback
      */
-    SharedPreferencesManager(Context context, java.lang.String result, Type type, Callback callback) {
+    SharedPreferencesManager(@NonNull Context context, java.lang.String result, Type type, Callback callback) {
         this.context = context;
         switch (type) {
             case INT:
                 try {
                     this.resultInt = Integer.parseInt(result);
-                    ((OnSavePreferences) callback).onComplete("Sucesso Int");
+                    ((OnSavePreferences) callback).onComplete("Success save Int");
                 } catch (NumberFormatException e) {
                     ((OnSavePreferences) callback).onError(e);
                 }
@@ -86,7 +87,7 @@ public class SharedPreferencesManager {
             case FLOAT:
                 try {
                     this.resultFloat = java.lang.Float.parseFloat(result);
-                    ((OnSavePreferences) callback).onComplete("Sucesso Float");
+                    ((OnSavePreferences) callback).onComplete("Success save Float");
                 } catch (NumberFormatException e) {
                     ((OnSavePreferences) callback).onError(e);
                 }
@@ -94,7 +95,7 @@ public class SharedPreferencesManager {
             case LONG:
                 try {
                     this.resultLong = java.lang.Long.parseLong(result);
-                    ((OnSavePreferences) callback).onComplete("Sucesso Long");
+                    ((OnSavePreferences) callback).onComplete("Success save Long");
                 } catch (NumberFormatException e) {
                     ((OnSavePreferences) callback).onError(e);
                 }
@@ -102,8 +103,8 @@ public class SharedPreferencesManager {
             case STRING:
                 try {
                     this.resultString = result;
-                    ((OnSavePreferences) callback).onComplete("Sucesso String");
-                } catch (NumberFormatException e) {
+                    ((OnSavePreferences) callback).onComplete("Success save String");
+                } catch (Exception e) {
                     ((OnSavePreferences) callback).onError(e);
                 }
                 break;
@@ -121,34 +122,50 @@ public class SharedPreferencesManager {
         private SharedPreferences.Editor editorBoolean;
 
         void save() {
-            settingsBoolean = context.getSharedPreferences(SHARED_PREFERENCES_BOOLEAN, Context.MODE_PRIVATE);
-            editorBoolean = settingsBoolean.edit();
-            editorBoolean.putBoolean(SHARED_PREFERENCES_BOOLEAN, resultBoolean);
-            editorBoolean.apply();
-
+            try {
+                settingsBoolean = context.getSharedPreferences(SHARED_PREFERENCES_BOOLEAN, Context.MODE_PRIVATE);
+                editorBoolean = settingsBoolean.edit();
+                editorBoolean.putBoolean(SHARED_PREFERENCES_BOOLEAN, resultBoolean);
+                editorBoolean.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
         boolean restore() {
-            settingsBoolean = context.getSharedPreferences(SHARED_PREFERENCES_BOOLEAN, Context.MODE_PRIVATE);
-            resultBoolean = settingsBoolean.getBoolean(SHARED_PREFERENCES_BOOLEAN, resultBoolean);
+            try {
+                settingsBoolean = context.getSharedPreferences(SHARED_PREFERENCES_BOOLEAN, Context.MODE_PRIVATE);
+                resultBoolean = settingsBoolean.getBoolean(SHARED_PREFERENCES_BOOLEAN, resultBoolean);
+                return resultBoolean;
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
             return resultBoolean;
         }
 
         boolean occupy() {
             try {
-                if (settingsBoolean.getAll().isEmpty()) {
-                    return false;
+                try {
+                    if (settingsBoolean.getAll().isEmpty()) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                ((OnSavePreferences) callback).onError(e);
             }
             return true;
         }
 
         void clear() {
-            editorBoolean = settingsBoolean.edit();
-            editorBoolean.clear();
-            editorBoolean.apply();
+            try {
+                editorBoolean = settingsBoolean.edit();
+                editorBoolean.clear();
+                editorBoolean.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
     }
@@ -162,33 +179,50 @@ public class SharedPreferencesManager {
         private SharedPreferences.Editor editorInt;
 
         void save() {
-            settingsInt = context.getSharedPreferences(SHARED_PREFERENCES_INT, Context.MODE_PRIVATE);
-            editorInt = settingsInt.edit();
-            editorInt.putInt(SHARED_PREFERENCES_INT, resultInt);
-            editorInt.apply();
+            try {
+                settingsInt = context.getSharedPreferences(SHARED_PREFERENCES_INT, Context.MODE_PRIVATE);
+                editorInt = settingsInt.edit();
+                editorInt.putInt(SHARED_PREFERENCES_INT, resultInt);
+                editorInt.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
         int restore() {
-            settingsInt = context.getSharedPreferences(SHARED_PREFERENCES_INT, Context.MODE_PRIVATE);
-            resultInt = settingsInt.getInt(SHARED_PREFERENCES_INT, resultInt);
+            try {
+                settingsInt = context.getSharedPreferences(SHARED_PREFERENCES_INT, Context.MODE_PRIVATE);
+                resultInt = settingsInt.getInt(SHARED_PREFERENCES_INT, resultInt);
+                return resultInt;
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
             return resultInt;
         }
 
         boolean occupy() {
             try {
-                if (settingsInt.getAll().isEmpty()) {
-                    return false;
+                try {
+                    if (settingsInt.getAll().isEmpty()) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                ((OnSavePreferences) callback).onError(e);
             }
             return true;
         }
 
         void clear() {
-            editorInt = settingsInt.edit();
-            editorInt.clear();
-            editorInt.apply();
+            try {
+                editorInt = settingsInt.edit();
+                editorInt.clear();
+                editorInt.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
     }
@@ -202,33 +236,50 @@ public class SharedPreferencesManager {
 
 
         void save() {
-            settingsFloat = context.getSharedPreferences(SHARED_PREFERENCES_FLOAT, Context.MODE_PRIVATE);
-            editorFloat = settingsFloat.edit();
-            editorFloat.putFloat(SHARED_PREFERENCES_FLOAT, resultFloat);
-            editorFloat.apply();
+            try {
+                settingsFloat = context.getSharedPreferences(SHARED_PREFERENCES_FLOAT, Context.MODE_PRIVATE);
+                editorFloat = settingsFloat.edit();
+                editorFloat.putFloat(SHARED_PREFERENCES_FLOAT, resultFloat);
+                editorFloat.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
         float restore() {
-            settingsFloat = context.getSharedPreferences(SHARED_PREFERENCES_FLOAT, Context.MODE_PRIVATE);
-            resultFloat = settingsFloat.getFloat(SHARED_PREFERENCES_FLOAT, resultFloat);
+            try {
+                settingsFloat = context.getSharedPreferences(SHARED_PREFERENCES_FLOAT, Context.MODE_PRIVATE);
+                resultFloat = settingsFloat.getFloat(SHARED_PREFERENCES_FLOAT, resultFloat);
+                return resultFloat;
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
             return resultFloat;
         }
 
         boolean occupy() {
             try {
-                if (settingsFloat.getAll().isEmpty()) {
-                    return false;
+                try {
+                    if (settingsFloat.getAll().isEmpty()) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                ((OnSavePreferences) callback).onError(e);
             }
             return true;
         }
 
         void clear() {
-            editorFloat = settingsFloat.edit();
-            editorFloat.clear();
-            editorFloat.apply();
+            try {
+                editorFloat = settingsFloat.edit();
+                editorFloat.clear();
+                editorFloat.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
     }
@@ -242,33 +293,50 @@ public class SharedPreferencesManager {
 
 
         void save() {
-            settingsLong = context.getSharedPreferences(SHARED_PREFERENCES_LONG, Context.MODE_PRIVATE);
-            editorLong = settingsLong.edit();
-            editorLong.putLong(SHARED_PREFERENCES_LONG, resultLong);
-            editorLong.apply();
+            try {
+                settingsLong = context.getSharedPreferences(SHARED_PREFERENCES_LONG, Context.MODE_PRIVATE);
+                editorLong = settingsLong.edit();
+                editorLong.putLong(SHARED_PREFERENCES_LONG, resultLong);
+                editorLong.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
         long restore() {
-            settingsLong = context.getSharedPreferences(SHARED_PREFERENCES_LONG, Context.MODE_PRIVATE);
-            resultLong = settingsLong.getLong(SHARED_PREFERENCES_LONG, resultLong);
+            try {
+                settingsLong = context.getSharedPreferences(SHARED_PREFERENCES_LONG, Context.MODE_PRIVATE);
+                resultLong = settingsLong.getLong(SHARED_PREFERENCES_LONG, resultLong);
+                return resultLong;
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
             return resultLong;
         }
 
         boolean occupy() {
             try {
-                if (settingsLong.getAll().isEmpty()) {
-                    return false;
+                try {
+                    if (settingsLong.getAll().isEmpty()) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                ((OnSavePreferences) callback).onError(e);
             }
             return true;
         }
 
         void clear() {
-            editorLong = settingsLong.edit();
-            editorLong.clear();
-            editorLong.apply();
+            try {
+                editorLong = settingsLong.edit();
+                editorLong.clear();
+                editorLong.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
     }
@@ -282,33 +350,50 @@ public class SharedPreferencesManager {
 
 
         void save() {
-            settingsString = context.getSharedPreferences(SHARED_PREFERENCES_STRING, Context.MODE_PRIVATE);
-            editorString = settingsString.edit();
-            editorString.putString(SHARED_PREFERENCES_STRING, resultString);
-            editorString.apply();
+            try {
+                settingsString = context.getSharedPreferences(SHARED_PREFERENCES_STRING, Context.MODE_PRIVATE);
+                editorString = settingsString.edit();
+                editorString.putString(SHARED_PREFERENCES_STRING, resultString);
+                editorString.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
         java.lang.String restore() {
-            settingsString = context.getSharedPreferences(SHARED_PREFERENCES_STRING, Context.MODE_PRIVATE);
-            resultString = settingsString.getString(SHARED_PREFERENCES_STRING, resultString);
+            try {
+                settingsString = context.getSharedPreferences(SHARED_PREFERENCES_STRING, Context.MODE_PRIVATE);
+                resultString = settingsString.getString(SHARED_PREFERENCES_STRING, resultString);
+                return resultString;
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
             return resultString;
         }
 
         boolean occupy() {
             try {
-                if (settingsString.getAll().isEmpty()) {
-                    return false;
+                try {
+                    if (settingsString.getAll().isEmpty()) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                ((OnSavePreferences) callback).onError(e);
             }
             return true;
         }
 
         void clear() {
-            editorString = settingsString.edit();
-            editorString.clear();
-            editorString.apply();
+            try {
+                editorString = settingsString.edit();
+                editorString.clear();
+                editorString.apply();
+            } catch (Exception e) {
+                ((OnSavePreferences) callback).onError(e);
+            }
         }
 
     }
